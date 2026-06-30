@@ -1,0 +1,51 @@
+patient_id,provider_name,provider_npi,cpt_code,cpt_desc,icd10_code,icd10_desc,billed_amount,allowed_amount,service_date,place_of_service,units,expected_outcome
+MBR-00421,Sunrise Family Medicine,1234567890,99213,"Office visit, established patient, low complexity",J06.9,Acute upper respiratory infection,166.91,110,2025-01-15,11,1,APPROVE
+MBR-00422,Valley Health Associates,3456789012,99213,"Office visit, established patient, low complexity",M54.5,Low back pain,177.61,110,2025-01-18,11,1,APPROVE
+MBR-00423,Mountain View Clinic,2345678901,99214,"Office visit, established patient, moderate complexity",I10,Essential hypertension,281.02,165,2025-01-21,11,1,APPROVE
+MBR-00424,Lakeside Primary Care,5678901234,99214,"Office visit, established patient, moderate complexity",E11.9,Type 2 diabetes mellitus,260.02,165,2025-01-24,11,1,APPROVE
+MBR-00425,Riverside Medical Group,4567890123,99212,"Office visit, established patient, straightforward",Z23,Encounter for immunization,90.7,65,2025-01-27,11,1,APPROVE
+MBR-00426,Sunrise Family Medicine,1234567890,99213,"Office visit, established patient, low complexity",J45.20,"Mild intermittent asthma, uncomplicated",167.08,110,2025-01-30,11,1,APPROVE
+MBR-00427,Lakeside Primary Care,5678901234,99212,"Office visit, established patient, straightforward",K21.0,GERD with esophagitis,93.63,65,2025-02-02,11,1,APPROVE
+MBR-00428,Lakeside Primary Care,5678901234,99213,"Office visit, established patient, low complexity",F41.1,Generalized anxiety disorder,171.47,110,2025-02-05,11,1,APPROVE
+MBR-00429,Lakeside Primary Care,5678901234,93000,"Electrocardiogram, routine, with interpretation",I10,Essential hypertension,116.49,45,2025-02-08,11,1,APPROVE
+MBR-00430,Riverside Medical Group,4567890123,71046,"Chest X-ray, 2 views",J18.9,"Pneumonia, unspecified organism",228.45,95,2025-02-11,11,1,APPROVE
+MBR-00431,Sunrise Family Medicine,1234567890,85025,Complete blood count with differential,E11.9,Type 2 diabetes mellitus,58.51,15,2025-02-14,11,1,APPROVE
+MBR-00432,Mountain View Clinic,2345678901,80053,Comprehensive metabolic panel,E11.9,Type 2 diabetes mellitus,73.83,20,2025-02-17,11,1,APPROVE
+MBR-00433,Valley Health Associates,3456789012,96372,"Therapeutic, prophylactic injection",J45.20,"Mild intermittent asthma, uncomplicated",84.29,35,2025-02-20,11,1,APPROVE
+MBR-00434,Mountain View Clinic,2345678901,99211,"Office visit, minimal complexity",Z23,Encounter for immunization,71.08,25,2025-02-23,11,1,APPROVE
+MBR-00435,Valley Health Associates,3456789012,99214,"Office visit, established patient, moderate complexity",F41.1,Generalized anxiety disorder,250.99,165,2025-02-26,11,1,APPROVE
+MBR-00436,Riverside Medical Group,4567890123,99213,"Office visit, established patient, low complexity",J06.9,Acute upper respiratory infection,168.79,110,2025-03-01,11,1,APPROVE
+MBR-00437,Valley Health Associates,3456789012,99213,"Office visit, established patient, low complexity",M54.5,Low back pain,187.3,110,2025-03-04,11,1,APPROVE
+MBR-00438,Sunrise Family Medicine,1234567890,99214,"Office visit, established patient, moderate complexity",I10,Essential hypertension,280.76,165,2025-03-07,11,1,APPROVE
+MBR-00439,Lakeside Primary Care,5678901234,99214,"Office visit, established patient, moderate complexity",E11.9,Type 2 diabetes mellitus,261.56,165,2025-03-10,11,1,APPROVE
+MBR-00440,Riverside Medical Group,4567890123,99212,"Office visit, established patient, straightforward",Z23,Encounter for immunization,91.37,65,2025-03-13,11,1,APPROVE
+MBR-00441,Valley Health Associates,3456789012,99213,"Office visit, established patient, low complexity",J45.20,"Mild intermittent asthma, uncomplicated",182.65,110,2025-03-16,11,1,APPROVE
+MBR-00442,Lakeside Primary Care,5678901234,99212,"Office visit, established patient, straightforward",K21.0,GERD with esophagitis,97.45,65,2025-03-19,11,1,APPROVE
+MBR-00443,Valley Health Associates,3456789012,99213,"Office visit, established patient, low complexity",F41.1,Generalized anxiety disorder,181.41,110,2025-03-22,11,1,APPROVE
+MBR-00444,Sunrise Family Medicine,1234567890,93000,"Electrocardiogram, routine, with interpretation",I10,Essential hypertension,110.04,45,2025-03-25,11,1,APPROVE
+MBR-00445,Mountain View Clinic,2345678901,71046,"Chest X-ray, 2 views",J18.9,"Pneumonia, unspecified organism",234.51,95,2025-03-28,11,1,APPROVE
+MBR-00621,QuickCare Specialists LLC,9876543210,99215,"Office visit, established patient, high complexity",J06.9,Acute upper respiratory infection,485,210,2025-01-20,11,1,FLAG FOR REVIEW
+MBR-00622,QuickCare Specialists LLC,9876543210,99215,"Office visit, established patient, high complexity",Z00.00,General adult medical examination,490,210,2025-01-24,11,1,FLAG FOR REVIEW
+MBR-00623,QuickCare Specialists LLC,9876543210,99215,"Office visit, established patient, high complexity",J45.20,"Mild intermittent asthma, uncomplicated",480,210,2025-01-28,11,1,FLAG FOR REVIEW
+MBR-00624,Premium Billing Solutions,8765432109,99215,"Office visit, established patient, high complexity",K21.0,GERD with esophagitis,475,210,2025-02-01,11,1,FLAG FOR REVIEW
+MBR-00625,Premium Billing Solutions,8765432109,99215,"Office visit, established patient, high complexity",F41.1,Generalized anxiety disorder,485,210,2025-02-05,11,1,FLAG FOR REVIEW
+MBR-00626,Premium Billing Solutions,8765432109,99214,"Office visit, established patient, moderate complexity",J06.9,Acute upper respiratory infection,270,165,2025-02-09,11,1,FLAG FOR REVIEW
+MBR-00627,Premium Billing Solutions,8765432109,99214,"Office visit, established patient, moderate complexity",Z23,Encounter for immunization,265,165,2025-02-13,11,1,FLAG FOR REVIEW
+MBR-00628,QuickCare Specialists LLC,9876543210,99215,"Office visit, established patient, high complexity",M54.5,Low back pain,480,210,2025-02-17,11,1,FLAG FOR REVIEW
+MBR-00629,Premium Billing Solutions,8765432109,99215,"Office visit, established patient, high complexity",J06.9,Acute upper respiratory infection,485,210,2025-02-21,11,1,FLAG FOR REVIEW
+MBR-00630,Premium Billing Solutions,8765432109,99215,"Office visit, established patient, high complexity",Z00.00,General adult medical examination,490,210,2025-02-25,11,1,FLAG FOR REVIEW
+MBR-00631,QuickCare Specialists LLC,9876543210,99215,"Office visit, established patient, high complexity",J45.20,"Mild intermittent asthma, uncomplicated",480,210,2025-03-01,11,1,FLAG FOR REVIEW
+MBR-00632,Premium Billing Solutions,8765432109,99215,"Office visit, established patient, high complexity",K21.0,GERD with esophagitis,475,210,2025-03-05,11,1,FLAG FOR REVIEW
+MBR-00633,QuickCare Specialists LLC,9876543210,99215,"Office visit, established patient, high complexity",F41.1,Generalized anxiety disorder,485,210,2025-03-09,11,1,FLAG FOR REVIEW
+MBR-00634,QuickCare Specialists LLC,9876543210,99214,"Office visit, established patient, moderate complexity",J06.9,Acute upper respiratory infection,270,165,2025-03-13,11,1,FLAG FOR REVIEW
+MBR-00635,QuickCare Specialists LLC,9876543210,99214,"Office visit, established patient, moderate complexity",Z23,Encounter for immunization,265,165,2025-03-17,11,1,FLAG FOR REVIEW
+MBR-00821,MaxBill Medical Group,7654321098,99215,"Office visit, established patient, high complexity",Z00.00,General adult medical examination,1250,210,2025-02-30,11,48,DENY
+MBR-00822,MaxBill Medical Group,7654321098,99213,"Office visit, established patient, low complexity",J06.9,Acute upper respiratory infection,1100,110,2025-04-31,11,32,DENY
+MBR-00823,MaxBill Medical Group,7654321098,99215,"Office visit, established patient, high complexity",I10,Essential hypertension,980,210,2027-06-15,11,1,DENY
+MBR-00824,MaxBill Medical Group,7654321098,99213,"Office visit, established patient, low complexity",M54.5,Low back pain,4200,110,2025-03-10,11,28,DENY
+MBR-00825,MaxBill Medical Group,7654321098,96372,"Therapeutic, prophylactic injection",J45.20,"Mild intermittent asthma, uncomplicated",3500,35,2025-01-22,11,60,DENY
+MBR-00826,MaxBill Medical Group,7654321098,71046,"Chest X-ray, 2 views",J18.9,"Pneumonia, unspecified organism",2800,95,2025-02-14,23,1,DENY
+MBR-00827,MaxBill Medical Group,7654321098,85025,Complete blood count with differential,E11.9,Type 2 diabetes mellitus,1800,15,2025-03-05,11,1,DENY
+MBR-00828,MaxBill Medical Group,7654321098,99215,"Office visit, established patient, high complexity",Z00.00,General adult medical examination,490,210,2025-01-30,23,1,DENY
+MBR-00829,MaxBill Medical Group,7654321098,99213,"Office visit, established patient, low complexity",J06.9,Acute upper respiratory infection,175,110,2025-03-14,11,1,DENY
+MBR-00830,MaxBill Medical Group,7654321098,80053,Comprehensive metabolic panel,E11.9,Type 2 diabetes mellitus,3200,20,2025-02-20,11,45,DENY
