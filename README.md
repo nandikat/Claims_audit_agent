@@ -1,6 +1,3 @@
-"# Claims_audit_agent" 
-Here is a standard, structured README for the Claims Audit Agent repository based on the provided slides, report, and codebase.
-
 # Claims Audit Agent: Agentic AI for Payment Integrity
 
 > **Overview**
@@ -8,7 +5,7 @@ Here is a standard, structured README for the Claims Audit Agent repository base
 > 
 > 
 
-By shifting away from brittle static rules engines and opaque machine learning classifiers, this application uses a Large Language Model (LLM) to reason through claims data autonomously, generating an auditable trail of logic mirroring a human analyst's workflow.
+This application uses a Large Language Model (LLM) to reason through claims data autonomously, generating an auditable trail of logic mirroring a human analyst's workflow.
 
 ---
 
