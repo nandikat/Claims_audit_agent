@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claims Audit Agent</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      background: #f4f4f3;
+      color: #1a1a1a;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      background: #1e1b4b;
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    header h1 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+    header p  { font-size: 11px; opacity: 0.6; }
+    .hd-badge {
+      font-size: 10px;
+      background: rgba(255,255,255,.15);
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+
+    main {
+      display: grid;
+      grid-template-columns: 390px 1fr;
+      flex: 1;
+      overflow: hidden;
+    }
+
+
+    .left-panel {
+      background: #fff;
+      border-right: 1px solid #e4e4e2;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+
+    .claims-head {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e4e4e2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .claims-head-title { font-size: 12px; font-weight: 600; }
+    .upload-btn {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 20px;
+      border: 1px solid #6366f1;
+      color: #6366f1;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .upload-btn:hover { background: #6366f1; color: #fff; }
+    .upload-btn.loading { opacity: 0.5; cursor: not-allowed; }
+      font-size: 10px;
+      font-weight: 500;
+      background: #ede9fe;
+      color: #5b21b6;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    .filter-bar {
+      padding: 7px 14px;
+      border-bottom: 1px solid #e4e4e2;
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .filter-btn {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid;
+      cursor: pointer;
+      background: transparent;
+      transition: opacity 0.15s;
+    }
+    .filter-btn:hover   { opacity: 0.7; }
+    .filter-btn.active  { color: #fff !important; border-color: transparent !important; }
+    .filter-btn.all     { border-color: #6366f1; color: #6366f1; }
+    .filter-btn.all.active   { background: #6366f1; }
+    .filter-btn.approve { border-color: #16a34a; color: #16a34a; }
+    .filter-btn.approve.active { background: #16a34a; }
+    .filter-btn.flag    { border-color: #d97706; color: #d97706; }
+    .filter-btn.flag.active    { background: #d97706; }
+    .filter-btn.deny    { border-color: #dc2626; color: #dc2626; }
+    .filter-btn.deny.active    { background: #dc2626; }
+
+    .claims-table-wrap {
+      overflow-y: auto;
+      max-height: 210px;
+      border-bottom: 1px solid #e4e4e2;
+      flex-shrink: 0;
+    }
+    .claims-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+    .claims-table thead th {
+      padding: 6px 10px;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      color: #737370;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: #fafaf9;
+      border-bottom: 1px solid #e4e4e2;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    .claims-table tbody tr {
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .claims-table tbody tr:hover  { background: #f4f4f3; }
+    .claims-table tbody tr.active { background: #ede9fe; }
+    .claims-table td {
+      padding: 5px 10px;
+      border-bottom: 1px solid #f0f0ef;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .claims-table td.mono { font-family: 'Menlo','Consolas',monospace; font-size: 10px; }
+    .outcome-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+
+    .sel-head {
+      padding: 7px 14px;
+      border-bottom: 1px solid #e4e4e2;
+      font-size: 10px;
+      font-weight: 600;
+      color: #737370;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    .form-body {
+      padding: 12px 14px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .field-row      { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+    .field-row.full { grid-template-columns: 1fr; }
+    .field          { display: flex; flex-direction: column; gap: 2px; }
+
+    label {
+      font-size: 10px;
+      font-weight: 500;
+      color: #737370;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    input, select {
+      font-size: 11px;
+      padding: 5px 7px;
+      border: 1px solid #d4d4d0;
+      border-radius: 5px;
+      color: #1a1a1a;
+      background: #fff;
+      width: 100%;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    input:focus, select:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+    }
+    .mono-input { font-family: 'Menlo','Consolas',monospace; }
+
+    .form-footer {
+      padding: 10px 14px;
+      border-top: 1px solid #e4e4e2;
+      flex-shrink: 0;
+    }
+    .run-btn {
+      width: 100%;
+      background: #1e1b4b;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .run-btn:hover    { background: #312e81; }
+    .run-btn:disabled { background: #a0a09d; cursor: not-allowed; }
+
+
+    .chain-panel {
+      background: #f4f4f3;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .chain-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #737370;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 12px;
+    }
+
+    .step-card {
+      background: #fff;
+      border: 1px solid #e4e4e2;
+      border-radius: 10px;
+      margin-bottom: 11px;
+      overflow: hidden;
+    }
+    .step-head {
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #e4e4e2;
+    }
+    .step-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-num.purple { background: #ede9fe; color: #5b21b6; }
+    .step-num.amber  { background: #fef3c7; color: #92400e; }
+    .step-num.coral  { background: #fee2e2; color: #991b1b; }
+    .step-num.teal   { background: #d1fae5; color: #065f46; }
+
+    .step-name { font-size: 12px; font-weight: 600; }
+    .step-desc { font-size: 11px; color: #737370; margin-top: 1px; }
+
+    .step-body {
+      padding: 14px;
+      min-height: 56px;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #1a1a1a;
+    }
+    .step-body.empty {
+      display: flex; align-items: center;
+      color: #b0b0aa; font-style: italic;
+    }
+    .step-body.loading {
+      display: flex; align-items: center; gap: 8px;
+      color: #737370;
+    }
+    .pulse {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #6366f1;
+      animation: pulse 1s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:.3; transform:scale(.8); }
+      50%      { opacity:1;  transform:scale(1.2); }
+    }
+
+    .verdict {
+      display: inline-block;
+      font-size: 11px; font-weight: 700;
+      padding: 2px 10px; border-radius: 20px;
+      margin-bottom: 6px;
+    }
+    .verdict.APPROVE { background: #dcfce7; color: #15803d; }
+    .verdict.FLAG    { background: #fef9c3; color: #854d0e; }
+    .verdict.DENY    { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Claims Audit Agent</h1>
+    <p>Agentic AI for Payment Integrity</p>
+  </div>
+ </header>
+
+<main>
+
+
+  <div class="left-panel">
+
+
+    <div class="claims-head">
+      <span class="claims-head-title">Claims dataset</span>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="upload-btn" onclick="document.getElementById('csv-upload').click()">↑ Upload CSV</button>
+        <span class="count-badge" id="count-badge">Loading…</span>
+      </div>
+      <input type="file" id="csv-upload" accept=".csv" style="display:none" onchange="uploadCSV(this)">
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn all active"    onclick="filterClaims('all')"    id="f-all">All</button>
+      <button class="filter-btn approve"       onclick="filterClaims('APPROVE')"id="f-approve">Approve</button>
+      <button class="filter-btn flag"          onclick="filterClaims('FLAG FOR REVIEW')" id="f-flag">Flag</button>
+      <button class="filter-btn deny"          onclick="filterClaims('DENY')"   id="f-deny">Deny</button>
+    </div>
+
+    <div class="claims-table-wrap">
+      <table class="claims-table">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>CPT</th>
+            <th>Provider</th>
+            <th>Billed</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="claims-tbody"></tbody>
+      </table>
+    </div>
+
+
+    <div class="sel-head">Selected claim</div>
+
+    <div class="form-body">
+      <div class="field-row">
+        <div class="field"><label>Patient ID</label><input id="patient_id" class="mono-input" placeholder="—"></div>
+        <div class="field"><label>Service date</label><input id="service_date" placeholder="—"></div>
+      </div>
+      <div class="field-row full">
+        <div class="field"><label>Provider name</label><input id="provider_name" placeholder="—"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Provider NPI</label><input id="provider_npi" class="mono-input" placeholder="—"></div>
+        <div class="field"><label>Place of service</label>
+          <select id="place_of_service">
+            <option value="11">11 — Office</option>
+            <option value="21">21 — Hospital inpatient</option>
+            <option value="23">23 — Emergency room</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>CPT code</label><input id="cpt_code" class="mono-input" placeholder="—"></div>
+        <div class="field"><label>Units</label><input id="units" type="number" placeholder="—" min="1"></div>
+      </div>
+      <div class="field-row full">
+        <div class="field"><label>CPT description</label><input id="cpt_desc" placeholder="—"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>ICD-10 code</label><input id="icd10_code" class="mono-input" placeholder="—"></div>
+        <div class="field"><label>ICD-10 description</label><input id="icd10_desc" placeholder="—"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Billed ($)</label><input id="billed_amount" type="number" placeholder="—"></div>
+        <div class="field"><label>Allowed ($)</label><input id="allowed_amount" type="number" placeholder="—"></div>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button class="run-btn" id="run-btn" onclick="runAudit()">Audit</button>
+    </div>
+  </div>
+
+
+  <section class="chain-panel">
+    <div class="chain-label">Reasoning chain</div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num purple">1</div>
+        <div><div class="step-name">Contextualize</div><div class="step-desc">Parse the claim — what service is this?</div></div>
+      </div>
+      <div class="step-body empty" id="s1">Select a claim from the dataset to begin…</div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num amber">2</div>
+        <div><div class="step-name">Detect anomalies</div><div class="step-desc">Flag any billing irregularities</div></div>
+      </div>
+      <div class="step-body empty" id="s2">Awaiting step 1…</div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num coral">3</div>
+        <div><div class="step-name">Classify</div><div class="step-desc">Approve · Flag for review · Deny</div></div>
+      </div>
+      <div class="step-body empty" id="s3">Awaiting step 2…</div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-num teal">4</div>
+        <div><div class="step-name">Recommend</div><div class="step-desc">Action for the audit team</div></div>
+      </div>
+      <div class="step-body empty" id="s4">Awaiting step 3…</div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  let allClaims   = [];
+  let filtered    = [];
+  let activeFilter = "all";
+  let activeIdx   = null;
+
+
+  async function loadClaims() {
+    try {
+      const res  = await fetch("/claims");
+      allClaims  = await res.json();
+      filtered   = allClaims;
+      renderTable(filtered);
+    
+      if (allClaims.length) selectClaim(0);
+    } catch (e) {
+      document.getElementById("count-badge").textContent = "Error loading";
+    }
+  }
+
+
+  function filterClaims(type) {
+    activeFilter = type;
+
+
+    ["all","approve","flag","deny"].forEach(k => {
+      document.getElementById(`f-${k}`).classList.remove("active");
+    });
+    const keyMap = { "all":"all", "APPROVE":"approve", "FLAG FOR REVIEW":"flag", "DENY":"deny" };
+    document.getElementById(`f-${keyMap[type]}`).classList.add("active");
+
+    filtered = type === "all"
+      ? allClaims
+      : allClaims.filter(c => c.expected_outcome === type);
+
+    renderTable(filtered);
+    if (filtered.length) selectClaim(0);
+  }
+
+  function renderTable(claims) {
+    const tbody = document.getElementById("claims-tbody");
+    document.getElementById("count-badge").textContent = `${claims.length} claims`;
+
+    if (!claims.length) {
+      tbody.innerHTML = `<tr><td colspan="5" style="padding:12px;text-align:center;color:#b0b0aa;font-style:italic">No claims</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = claims.map((c, i) => `
+      <tr onclick="selectClaim(${i})" id="row-${i}">
+        <td class="mono">${c.patient_id}</td>
+        <td class="mono">${c.cpt_code}</td>
+        <td>${c.provider_name.length > 16 ? c.provider_name.slice(0,16)+"…" : c.provider_name}</td>
+        <td>$${c.billed_amount}</td>
+        <td><span class="outcome-dot" style="background:${dotColor(c.expected_outcome)}"></span></td>
+      </tr>`).join("");
+  }
+
+  function dotColor(outcome) {
+    if (outcome === "APPROVE")         return "#16a34a";
+    if (outcome === "FLAG FOR REVIEW") return "#d97706";
+    if (outcome === "DENY")            return "#dc2626";
+    return "#a0a09d"; 
+  }
+
+
+  async function uploadCSV(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const btn = document.querySelector(".upload-btn");
+    btn.textContent = "Uploading…";
+    btn.classList.add("loading");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res  = await fetch("/upload", { method: "POST", body: formData });
+      const data = await res.json();
+
+      if (data.error) {
+        alert(`Upload error: ${data.error}`);
+        return;
+      }
+
+      allClaims    = data;
+      filtered     = data;
+      activeFilter = "all";
+      ["all","approve","flag","deny"].forEach(k =>
+        document.getElementById(`f-${k}`).classList.remove("active"));
+      document.getElementById("f-all").classList.add("active");
+
+      renderTable(filtered);
+      if (filtered.length) selectClaim(0);
+
+    } catch (e) {
+      alert(`Upload failed: ${e.message}`);
+    } finally {
+      btn.textContent = "↑ Upload CSV";
+      btn.classList.remove("loading");
+      input.value = ""; 
+    }
+  }
+
+
+  function selectClaim(idx) {
+    activeIdx = idx;
+    const c   = filtered[idx];
+
+
+    document.querySelectorAll("#claims-tbody tr").forEach(r => r.classList.remove("active"));
+    const row = document.getElementById(`row-${idx}`);
+    if (row) {
+      row.classList.add("active");
+      row.scrollIntoView({ block: "nearest" });
+    }
+
+
+    const fields = ["patient_id","provider_name","provider_npi","cpt_code","cpt_desc",
+                    "icd10_code","icd10_desc","billed_amount","allowed_amount",
+                    "service_date","place_of_service","units"];
+    fields.forEach(f => {
+      const el = document.getElementById(f);
+      if (el) el.value = c[f] ?? "";
+    });
+
+
+    resetSteps();
+  }
+
+
+  function resetSteps() {
+    const placeholders = [
+      "Run audit to analyze this claim…",
+      "Awaiting step 1…", "Awaiting step 2…", "Awaiting step 3…"
+    ];
+    ["s1","s2","s3","s4"].forEach((id, i) => {
+      const el = document.getElementById(id);
+      el.className = "step-body empty";
+      el.textContent = placeholders[i];
+    });
+  }
+
+
+  function setLoading(id) {
+    const el = document.getElementById(id);
+    el.className = "step-body loading";
+    el.innerHTML = `<div class="pulse"></div> Analyzing…`;
+  }
+
+  function setContent(id, html) {
+    const el = document.getElementById(id);
+    el.className = "step-body";
+    el.innerHTML = html;
+  }
+
+  function setError(id, msg) {
+    const el = document.getElementById(id);
+    el.className = "step-body";
+    el.innerHTML = `<span style="color:#dc2626">${msg}</span>`;
+  }
+
+
+  function renderStep3(text) {
+    const upper = text.toUpperCase();
+    let verdict = "FLAG";
+    if (upper.startsWith("APPROVE"))   verdict = "APPROVE";
+    else if (upper.startsWith("DENY")) verdict = "DENY";
+    const rest = text.replace(/^(APPROVE|FLAG FOR REVIEW|FLAG|DENY)[:\s—\-]*/i, "").trim();
+    return `<span class="verdict ${verdict}">${verdict}</span><br>${rest}`;
+  }
+
+
+  async function runAudit() {
+    const fields = ["patient_id","provider_name","provider_npi","cpt_code","cpt_desc",
+                    "icd10_code","icd10_desc","billed_amount","allowed_amount",
+                    "service_date","place_of_service","units"];
+    const claim = {};
+    fields.forEach(f => {
+      const el = document.getElementById(f);
+      claim[f] = el ? el.value : "";
+    });
+    claim.billed_amount  = parseFloat(claim.billed_amount);
+    claim.allowed_amount = parseFloat(claim.allowed_amount);
+    claim.units          = parseInt(claim.units);
+
+    const btn = document.getElementById("run-btn");
+    btn.disabled    = true;
+    btn.textContent = "Running audit…";
+    ["s1","s2","s3","s4"].forEach(setLoading);
+
+    try {
+      const res  = await fetch("/audit", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify(claim)
+      });
+      if (!res.ok) throw new Error(`Server error ${res.status}`);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      setContent("s1", data.step1);
+      setContent("s2", data.step2);
+      setContent("s3", renderStep3(data.step3));
+      setContent("s4", data.step4);
+
+    } catch (err) {
+      ["s1","s2","s3","s4"].forEach(id => setError(id, "—"));
+      setError("s1", `Error: ${err.message}`);
+    } finally {
+      btn.disabled    = false;
+      btn.textContent = "Run audit agent →";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadClaims);
+</script>
+
+</body>
+</html>
