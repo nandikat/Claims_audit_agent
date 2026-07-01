@@ -40,7 +40,7 @@ The application orchestrates a four-step agentic reasoning chain:
 ## 🛠 Tech Stack
 
 | Component | Technology | Description |
-
+| --- | --- | --- |
 | **Backend** | Python / Flask | Serves the web application and handles API routing.
 
 | **Frontend** | HTML / CSS / JS | Single-page interface built with vanilla web technologies for the agent dashboard.
@@ -50,7 +50,7 @@ The application orchestrates a four-step agentic reasoning chain:
 
 
 | **Data** | Pandas / CSV | Parses and filters the synthetic claims datasets.
-
+| --- | --- | --- |
 
 
 ---
