@@ -1,5 +1,9 @@
 # Claims Audit Agent: Agentic AI for Payment Integrity
 
+![alt text](image.png)
+
+--
+
 > **Overview**
 > This repository contains a working proof-of-concept web application developed for a Cotiviti intern assessment. It demonstrates the strategic opportunity of utilizing Agentic AI to automate multi-step clinical decision-making in healthcare payment integrity.
 > 
