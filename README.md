@@ -87,7 +87,7 @@ flask --app main.py run
 
 ```
 
-The application will be hosted at `[http://127.0.0.1:5000](http://127.0.0.1:5000)` by default.
+The application will be hosted at `http://127.0.0.1:5000` by default.
 
 ---
 
