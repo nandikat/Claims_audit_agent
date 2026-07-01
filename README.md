@@ -40,18 +40,17 @@ The application orchestrates a four-step agentic reasoning chain:
 ## 🛠 Tech Stack
 
 | Component | Technology | Description |
-| --- | --- | --- |
+
 | **Backend** | Python / Flask | Serves the web application and handles API routing.
-| --- | --- | --- |
 
 | **Frontend** | HTML / CSS / JS | Single-page interface built with vanilla web technologies for the agent dashboard.
-| --- | --- | --- |
+
 
 | **AI Integration** | Gemini API | Uses `gemini-2.5-flash` via the `google-genai` SDK to execute the reasoning chain.
-| --- | --- | --- |
+
 
 | **Data** | Pandas / CSV | Parses and filters the synthetic claims datasets.
-| --- | --- | --- |
+
 
 
 ---
