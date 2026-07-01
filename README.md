@@ -78,7 +78,7 @@ pip install flask pandas python-dotenv google-genai
 You must provide a Gemini API key for the LLM orchestration to function. Create a `.env` file in the root directory and add the following:
 
 ```env
-GEMINI_API_KEY=your_api_key_here
+GEMINI_API_KEY=your_api_key
 
 ```
 
@@ -96,7 +96,7 @@ The application will be hosted at `[http://127.0.0.1:5000](http://127.0.0.1:5000
 
 ## 📂 Project Structure
 
-* `app.py`: The main Flask application that sets up the local server, handles CSV uploads, and constructs the API calls to the Gemini model.
+* `main.py`: The main Flask application that sets up the local server, handles CSV uploads, and constructs the API calls to the Gemini model.
 
 
 * `templates/page1.html`: The frontend user interface containing the interactive table, claim details form, and the dynamic reasoning chain visualizer.
