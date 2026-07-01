@@ -61,7 +61,7 @@ The application orchestrates a four-step agentic reasoning chain:
 **1. Clone the repository and navigate to the directory:**
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/nandikat/Claims_audit_agent.git
 cd claims-audit-agent
 
 ```
